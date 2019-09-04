@@ -24,5 +24,21 @@ router.get('/', (req, res, next) => {
     });
 });
 
+router.delete('/', (req, res, next) => {
+    const {accountId, color} = req.query; // extracting the params from the query.
+    Notification.deleteMany({accountId: accountId, color: color}).exec() // getting back a callback.
+    .catch(err => { 
+        res.send({error: err});
+    })
+    .then(result => { // a successfull removal.
+        var messageText = "Notification"; // adjusting the message according to amount of notifications removed.
+        if(result.deletedCount > 1){
+            messageText += "s";
+        }
+        messageText += " Deleted";
+        res.send({message: messageText, result: result});
+    });
+});
+
 module.exports = router;
 
