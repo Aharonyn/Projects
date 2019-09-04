@@ -13,5 +13,16 @@ router.post('/', (req, res, next) => {
     });
 });
 
+router.get('/', (req, res, next) => {
+    const accountId = req.query.accountId; // extracting the relevant parameter from the query.
+    Notification.find({accountId : accountId}).exec() // getting back a callback.
+    .catch(err => { // if an error occured.
+        res.send({error: err}); 
+    })
+    .then(docs => { // a successfull search.
+        res.send(docs);
+    });
+});
+
 module.exports = router;
 
